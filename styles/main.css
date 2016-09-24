@@ -51,3 +51,12 @@ html {
      max-width: 64rem;
  }
     
+.clearfix::before,
+.clearfix::after {
+   content: " ";
+   display: table;
+}
+
+.clearfix::after {
+   clear: both;
+}
