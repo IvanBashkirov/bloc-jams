@@ -15,6 +15,21 @@ var albumPicasso = {
    ]
 };
 
+var albumPuppy = {
+   title: 'Family Dinner',
+   artist: 'Snarky Puppy',
+   label: 'NYstuff',
+   year: '2016',
+   albumArtUrl: 'assets/images/album_covers/02.png',
+   songs: [
+       { title: 'Going under', duration: '4:26' },
+       { title: 'Lingus', duration: '5:14' },
+       { title: 'Shofukran', duration: '3:41' },
+       { title: 'Yes', duration: '2:17'},
+       { title: 'Title', duration: '2:15'}
+   ]
+};
+
 // Another Example Album
 var albumMarconi = {
    title: 'The Telephone',
@@ -63,6 +78,26 @@ var setCurrentAlbum = function(album) {
    }
 };
 
+var currAlbum = albumPicasso;
+
 window.onload = function() {
-   setCurrentAlbum(albumPicasso);
+  
+  setCurrentAlbum(albumPicasso);
+  var albumCover = document.getElementsByClassName('album-cover-art')[0];
+  albumCover.addEventListener('click', function() {
+    
+    switch (currAlbum) {
+      case albumPicasso:
+        setCurrentAlbum(albumMarconi);
+        currAlbum = (albumMarconi);
+        break;
+      case albumMarconi:
+        setCurrentAlbum(albumPuppy);
+        currAlbum = albumPuppy;
+        break;
+      case albumPuppy:
+        setCurrentAlbum(albumPicasso);
+        currAlbum = albumPicasso;
+    }
+  });
 };
