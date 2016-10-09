@@ -122,9 +122,21 @@ window.onload = function() {
 var findParentByClassName = function(el, className){
   
   var p = el.parentElement;
-  if (!p) return null;
+  if (!p) {
+    alert("No parent found");
+    return null;
+  }
   
-  return (p.className == className) ? p : findParentByClassName(p, className);
+  var findParentByClassNameHelp = function(el2, className) {
+    var p2 = el2.parentElement;
+    if (!p2) {
+      alert("No parent found with that class name");
+      return null; 
+    }
+    return (p2.className == className) ? p2 : findParentByClassNameHelper(p2, className);
+  }
+  
+  return (p.className == className) ? p : findParentByClassNameHelper(p, className);
 };
 
 var getSongItem = function(el) {
