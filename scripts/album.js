@@ -14,14 +14,30 @@ var currentAlbum = null;
 var currentSoundFile = null;
 var currentVolume = 80;
 
+var setCurrentTimeInPlayerBar = function(currentTime) {
+  $('.current-time').text(filterTimeCode(currentTime));
+}
+
+var setTotalTimeInPlayerBar = function(totalTime) {
+  $('.total-time').text(filterTimeCode(totalTime));
+}
+
+var filterTimeCode = function(timeInSeconds) {
+  var timeInSecondsNumber = parseFloat(timeInSeconds);
+  var secs = ('0' + Math.floor(timeInSeconds%60)).slice(-2);
+  return Math.floor(timeInSecondsNumber/60) + ':' + secs;
+}
+
 var updatePlayerBarSong = function() {
   var songTitle = (currentSongFromAlbum !== null) ? currentSongFromAlbum.title : null;
   var artistTitle = (currentSongFromAlbum !== null) ? currentAlbum.artist : null;
   var songAndArtist = (songTitle !== null) ? songTitle + ' - ' + artistTitle : null;
+  var songDuration = (currentSongFromAlbum !== null) ? currentSongFromAlbum.duration : null;
   
   $('.currently-playing .song-name').text(songTitle);
   $('.currently-playing .artist-name').text(artistTitle);
   $('.currently-playing .artist-song-mobile').text(songAndArtist);
+  setTotalTimeInPlayerBar(songDuration);
   
   (currentSongFromAlbum !== null && !(currentSoundFile.isPaused())) ? $barPlayPause.html(playerBarPauseButton) : $barPlayPause.html(playerBarPlayButton);
 };
@@ -53,7 +69,7 @@ var createSongRow = function(songNumber, songName, songLength) {
       '<tr class="album-view-song-item">'
     + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
     + '  <td class="song-item-title">' + songName + '</td>'
-    + '  <td class="song-item-duration">' + songLength + '</td>'
+    + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
     + '</tr>'
     ;
 
@@ -142,6 +158,7 @@ var updateSeekBarWhileSongPlays = function() {
       var seekBarFillRatio = this.getTime() / this.getDuration();
       var $seekBar = $('.seek-control .seek-bar');
       updateSeekPercentage($seekBar, seekBarFillRatio);
+      setCurrentTimeInPlayerBar(this.getTime());
     });
   }
 };
@@ -256,6 +273,8 @@ var toggleFromPlayerBar = function() {
 
   
 }
+
+
 
 $('document').ready(function() {
   
